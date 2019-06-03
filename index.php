@@ -7,7 +7,7 @@
 <!doctype html>
 <html>
     <body>
-        <form action="game.php">
+        <form action="minesweeper.php">
             <input type="submit" value="Game" >
         </form>
     </body>
