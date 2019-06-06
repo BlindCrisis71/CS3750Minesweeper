@@ -1,7 +1,16 @@
 <?php
-include('./db_config.php');
+/**
+ * Database Service
+ */
+class DBService
+{
+  include('./db_config.php');
 
-echo("from db-service attemping to call DBConfig");
-$Func = new DBConfig();
-$Func->initializeDbConnection();
+  function connectData(argument)
+  {
+    echo("Testing- From db-service attemping to call DBConfig from DBService");
+    $Func = new DBConfig();
+    $Func->initializeDbConnection();
+  }
+}
 ?>
