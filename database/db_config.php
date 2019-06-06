@@ -4,7 +4,6 @@
      */
     class DBConfig
     {
-
       function initializeDbConnection()
       {
         // Variables for connecting to the server and database
