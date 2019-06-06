@@ -15,7 +15,7 @@
         // Create connection
         $conn = new mysqli($servername, $username, $password, $dbname);
         // Check connection
-        echo("testing db connection");
+        echo("Connecting to DB-Minesweeper<br><br>");
         if ($conn) {
             die("Connection failed: " . $conn->connect_error);
         }
