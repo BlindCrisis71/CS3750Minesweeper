@@ -1,6 +1,6 @@
 <?php
 
-    require_once ('db_config.php');
+    include_once ('database/db_config.php');
 
 ?>
 
