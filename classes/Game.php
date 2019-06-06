@@ -1,12 +1,11 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Blind
- * Date: 6/3/2019
- * Time: 4:27 PM
- */
 
+/**
+ * Keeps track of all the game rules and mechanics
+ */
 class Game
 {
+
+
 
 }

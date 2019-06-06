@@ -1,12 +1,12 @@
         <?php
-        include ("cell.php");
+        include("classes/cell.php");
         ?>
 <!DOCTYPE html>
 <html>
 <head>
     <title>Minesweeper</title>
-    <link rel="stylesheet" type="text/css" href="game.css">
-    <script src="minesweeper.js"></script>
+    <link rel="stylesheet" type="text/css" href="stylesheets/game.css">
+    <script src="scripts/minesweeper.js"></script>
 </head>
 <body>
     <canvas id = "board" width="310" height="360">
