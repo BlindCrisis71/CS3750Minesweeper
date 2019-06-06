@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<header>
+    <title>Minesweeper</title>
+</header>
+<body>
+    <canvas id = "board" width="500" height="500">
+            <script>
+        var canvas = document.getElementById("board");
+        var context = canvas.getContext("2d")
+        
+        
+        context.fillStyle = 'gray';
+        
+        for(int x = 0; x < 9; x++)
+            {
+                context.beginPath();
+                context.fillRect(x*10, y, 10, 10); 
+                context.closePath();
+            }
+    </script>
+    </canvas>
+
+</body>
+</html>
