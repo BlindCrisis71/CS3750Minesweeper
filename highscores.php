@@ -1,5 +1,6 @@
 <?php
 
+<<<<<<< HEAD
     include_once ('database/db_config.php');
 
 ?>
@@ -10,3 +11,6 @@
 
     </body>
 </html>
+=======
+require_once ("database/db_config.php");
+>>>>>>> restructure-git-layout
