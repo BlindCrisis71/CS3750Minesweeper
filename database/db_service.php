@@ -2,34 +2,42 @@
 /**
  * Database Service
  */
-
- $servername = ftpupload.net;
- $username = epiz_23946308;
- $password = FUs75Vs41;
- $dbname = epiz_23946308_minesweeper;
-
- // Create connection
- $conn = new mysqli($servername, $username, $password, $dbname);
- // Check connection
- echo("Connecting to DB-Minesweeper<br><br>");
- if ($conn) {
-     die("Connection failed: " . $conn->connect_error);
- }
-
- writeToGameTableDB("1", "Test");
- $board = getFromGameTableDB("1");
- echo $board;
-
  class DBService
  {
+   // Connect DB
+   public function connectDB()
+   {
+     $servername = "sql308.epizy.com";
+     $username = "epiz_23946308";
+     $password = "FUs75Vs41";
+     $dbname = "epiz_23946308_minesweeper";
+
+     $conn = new mysqli($servername, $username, $password, $dbname);
+
+     // Check connection
+     if ($conn->connect_error) {
+         die("Connection failed: " . $conn->connect_error);
+     }
+   }
+
    // Use to write GameId, BoardData to GameTable
    // Parameter 1: GameId, Parameter 2: BoardData
-   function writeToGameTableDB($gameId, $boardData)
+   public function writeToGameTableDB($gameId, $boardData)
    {
+     $servername = "sql308.epizy.com";
+     $username = "epiz_23946308";
+     $password = "FUs75Vs41";
+     $dbname = "epiz_23946308_minesweeper";
+
+     $conn = new mysqli($servername, $username, $password, $dbname);
+
+     // Check connection
+     if ($conn->connect_error) {
+         die("Connection failed: " . $conn->connect_error);
+     }
+
      $sql = "INSERT INTO GameTable (GameId, BoardData) VALUES ('" . $gameId . "', '" . $boardData . "')";
-     if ($conn->query($sql) === TRUE) {
-       echo "Success"
-     } else {
+     if ($conn->query($sql) === TRUE) {} else {
        echo "Error: " . $sql . "<br>" . $conn->error;
      }
    }
@@ -37,14 +45,31 @@
    // Use to get BoardData from GameTable
    // Parameter 1: GameId
    // Return: BoardData
-   function getFromGameTableDB($gameId)
+   public function getFromGameTableDB($gameId)
    {
-     $sql = "SELECT $select FROM GameTable WHERE GameId = $gameId";
+     $servername = "sql308.epizy.com";
+     $username = "epiz_23946308";
+     $password = "FUs75Vs41";
+     $dbname = "epiz_23946308_minesweeper";
+
+     $conn = new mysqli($servername, $username, $password, $dbname);
+
+     // Check connection
+     if ($conn->connect_error) {
+         die("Connection failed: " . $conn->connect_error);
+     }
+
+     $sql = "SELECT * FROM GameTable WHERE GameId = $gameId LIMIT 1";
      $result = $conn->query($sql);
      if ($result->num_rows > 0) {
-        return $result
+       $i = 1;
+       while ($row = $result->fetch_assoc()) {
+           echo " GAME-ID: " . $row["GameId"] . " BOARD-DATA: " . $row["BoardData"] . " <br><br>";
+           $i += 1;
+       }
+       echo "***************************************<br><br>";
       } else {
-        return "Error - DB could not be reached";
+        echo "NO RESULTS FOUND";
       }
     }
  }
