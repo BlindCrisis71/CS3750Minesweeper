@@ -1,21 +1,39 @@
-        <?php
-        require_once ('database/db_config.php');
-        include("classes/cell.php");
-        ?>
+<?php
+    include ("cell.php");
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
     <title>Minesweeper</title>
-    <link rel="stylesheet" type="text/css" href="stylesheets/game.css">
-    <script src="scripts/minesweeper.js"></script>
+    <link rel="stylesheet" type="text/css" href="game.css">
+    <script src="minesweeper.js"></script>
 </head>
 <body>
     <canvas id = "board" width="310" height="360">
+    <script>
         
+        //Functions
+        function drawFirstRect(){
+            context.fillStyle = 'black';
+            context.beginPath();
+            context.fillRect((boarderHeight-scoreBoxHeight)/2,(boarderHeight-scoreBoxHeight-padding)/2,scoreBoxWidth,scoreBoxHeight);
+            context.closePath();
+        }
+        function drawSecondRect(){
+            context.beginPath();
+            context.fillStyle = 'black';
+            context.fillRect(canvasWidth - scoreBoxWidth - ((boarderHeight-scoreBoxHeight-padding)/2),(boarderHeight-scoreBoxHeight-padding)/2,scoreBoxWidth,scoreBoxHeight);
+            context.closePath();
+        }
+        function printTime(){
+            context.fillStyle = 'red';
+            context.font = "30px Arial";
+            context.fillText(String(clockTime), canvasWidth - scoreBoxWidth - ((boarderHeight-scoreBoxHeight-padding)/2),((boarderHeight-scoreBoxHeight-padding)/2) + scoreBoxHeight);  
+
+        }  
         
-        
-        <script>
-            
+        //Draw out the canvas
         var canvas = document.getElementById("board");
         var context = canvas.getContext("2d");
         
@@ -38,11 +56,9 @@
                     $table[$y][$x] = new Cell($x,$y);
                     $text = json_encode($table[$y][$x]);
                     $data = json_decode($text);
-                    //echo $table[$y][$x]->x . ',' . $table[$y][$x]->y;
                     echo $data->x;
                 } 
             }
-        
         ?>
             
         var boarderHeight = 40;
@@ -57,29 +73,8 @@
         context.fillStyle = 'blue';
         context.beginPath();
         context.fillRect(0,0,canvasWidth,boarderHeight - padding);
-        context.closePath();
-            
-        function drawFirstRect(){
-            context.fillStyle = 'black';
-            context.beginPath();
-            context.fillRect((boarderHeight-scoreBoxHeight)/2,(boarderHeight-scoreBoxHeight-padding)/2,scoreBoxWidth,scoreBoxHeight);
-            context.closePath();
-        }
-        function drawSecondRect(){
-            context.beginPath();
-            context.fillStyle = 'black';
-            context.fillRect(canvasWidth - scoreBoxWidth - ((boarderHeight-scoreBoxHeight-padding)/2),(boarderHeight-scoreBoxHeight-padding)/2,scoreBoxWidth,scoreBoxHeight);
-            context.closePath();
-        }
-        function printTime(){
-            context.fillStyle = 'red';
-            context.font = "30px Arial";
-            context.fillText(String(clockTime), canvasWidth - scoreBoxWidth - ((boarderHeight-scoreBoxHeight-padding)/2),((boarderHeight-scoreBoxHeight-padding)/2) + scoreBoxHeight);  
-
-        }
-        
+        context.closePath();      
          
-                
         //Draw the squares
         for (y = 0; y < 9; y++) { 
             for(x = 0; x < 9; x++){
@@ -89,23 +84,41 @@
                 context.closePath(); 
             }
         }
-        
+            var str = '';
+            function sendCoordinates(x,y){
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function(){
+                if(this.readyState == 4 && this.status == 200){
+						document.getElementById("txtHint").innerHTML = this.responseText;
+                }
+                            
+            str = "minesweeper.php?x=" + x;
+            console.log(str);
+
+            }
+            xmlhttp.open("GET",str,true);
+            xmlhttp.send();           
+        }
+            
         //Event that is triggered when a cell is clicked
+
         canvas.addEventListener('contextmenu', function (evt) {
         var mousePos = getMousePos(canvas, evt);
         var mouseCell = getMouseCell(mousePos.x,mousePos.y, width, padding,canvas.scrollWidth, canvas.width, boarderHeight);
         context.fillStyle = 'red';
         context.fillRect(((mouseCell.x - 1)*width)+(padding*(mouseCell.x - 1)), ((mouseCell.y - 1)*height)+((mouseCell.y - 1)*padding) + boarderHeight, width, height);
         context.fillStyle = 'gray';
+            canvas.addEventListener("click", sendCoordinates(mouseCell.x, mouseCell.y));
         evt.preventDefault();
         return false;
         }, false);
-            
+
         var scoreBoxHeight = 25;
         var scoreBoxWidth = 50;
         var clockTime = 0;
         var score = 0;
             
+
         
         //draw black boxes to display score and time on
         drawFirstRect();
@@ -138,9 +151,10 @@
         drawing.onload = function() {
         context.drawImage(drawing,(canvasWidth/2)- 15,((boarderHeight-scoreBoxHeight-padding)/2) - padding/2);
         };
-     
+            
     </script>
     </canvas>
+    <h1 id = "txtHint"></h1>
 
 </body>
 </html>
