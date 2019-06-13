@@ -25,6 +25,6 @@
     include('db_service.php');
     $dbService = new DBService();
     $dbService->connectDB();
-    $dbService->writeToGameTableDB("2", "Test");
-    $dbService->getFromGameTableDB("2");
+    $dbService->writeToGameTableDB("3", "Test");
+    $dbService->getFromGameTableDB("3");
 ?>
