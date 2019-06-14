@@ -5,15 +5,13 @@
         public $width = 30;
         public $height = 30;
 
-        
         function __construct($x,$y) {
             $this->x = $x;
             $this->y = $y;
             $this->width = 30;
             $this->height = 30;
-            
+
         }
     }
 
 
-?>

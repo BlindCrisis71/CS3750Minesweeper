@@ -83,6 +83,7 @@ class Gameboard
 
     /**
      * Randomizes the coordinates of all mines on the gameboard.
+     * @return array A list of coordinates for the mines
      */
     public function randomizeMinePlacement() {
         // 2D array that holds the coordinates of all the mines
@@ -111,6 +112,8 @@ class Gameboard
 
         // Sorts $arrMineCoordinates values in ascending order
         sort($arrMineCoordinates);
+
+        return $arrMineCoordinates;
     }
 
     /**
@@ -120,7 +123,7 @@ class Gameboard
      * @param $y Y coordinate
      * @return bool Returns true if the coordinate pair exists in the array
      */
-    private function coordinateExists($coordinateArray, $x, $y) {
+    public function coordinateExists($coordinateArray, $x, $y) {
         for ($row = 0; $row < count($coordinateArray); $row++){
             if ($coordinateArray[$row][0] == $x && $coordinateArray[$row][1] == $y){
                 return true;
@@ -130,20 +133,20 @@ class Gameboard
         return false;
     }
 }
-
-//// TEST
-$mines = array();
-for ($x = 1; $x < 10; $x++) {
-  for ($y = 1; $y < 10; $y++) {
-    array_push($mines, array($x, $y, "F"));
-  }
-}
-
-for ($row = 0; $row < 81; $row++) {
-  echo "<p><b>Row number $row</b></p>";
-  echo "<ul>";
-  for ($col = 0; $col < 3; $col++) {
-    echo "<li>".$mines[$row][$col]."</li>";
-  }
-  echo "</ul>";
-}
+//
+////// TEST
+//$mines = array();
+//for ($x = 1; $x < 10; $x++) {
+//  for ($y = 1; $y < 10; $y++) {
+//    array_push($mines, array($x, $y, "F"));
+//  }
+//}
+//
+//for ($row = 0; $row < 81; $row++) {
+//  echo "<p><b>Row number $row</b></p>";
+//  echo "<ul>";
+//  for ($col = 0; $col < 3; $col++) {
+//    echo "<li>".$mines[$row][$col]."</li>";
+//  }
+//  echo "</ul>";
+//}
