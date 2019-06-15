@@ -1,6 +1,6 @@
         <?php
         require_once ('database/db_config.php');
-        include("classes/cell.php");
+        include("classes/Cell.php");
         ?>
 <!DOCTYPE html>
 <html>
