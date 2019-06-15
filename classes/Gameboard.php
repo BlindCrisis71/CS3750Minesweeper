@@ -1,9 +1,13 @@
 <?php
 class Gameboard
 {
-    var $minesBoard;
-    var $flagsBoard;
-    var $uncoveredBoard;
+    /**
+     * @var array Keeps track of the gameboard
+     * 2D array
+     * First array keeps track of the number of cells
+     * Second array keeps track of the cell states (x, y, mine, flag, uncovered)
+     */
+    private $gameboard;
 
     /**
      * @var bool Keeps track if the game has started
@@ -25,61 +29,61 @@ class Gameboard
      */
     private $gameboardHeight = 9;
 
-    public function getDefaultMinesArray() {
-        $mines = array();
-        for ($x = 1; $x < 10; $x++) {
-            for ($y = 1; $y < 10; $y++) {
-                array_push($mines, array($x, $y, "F"));
-            }
-        }
-        $this->minesBoard = $mines;
-        return $mines;
-    }
-
-    public function getDefaultFlagsArray() {
-        $flags = array();
-        for ($x = 1; $x < 10; $x++) {
-            for ($y = 1; $y < 10; $y++) {
-                array_push($flags, array($x, $y, "F"));
-            }
-        }
-        $this->flagsBoard = $flags;
-        return $flags;
-    }
-
-    public function getDefaultUncoveredArray() {
-        $uncovered = array();
-        for ($x = 1; $x < 10; $x++) {
-            for ($y = 1; $y < 10; $y++) {
-                array_push($uncovered, array($x, $y, "F"));
-            }
-        }
-        $this->uncoveredBoard = $uncovered;
-        return $uncovered;
-    }
-
-    public function getCellStatus($array, $x, $y) {
-        $status = "";
-
-        for ($row = 0; $row < 81; $row++) {
-            if ($array[$row][0] == $x && $array[$row][1] == $y) {
-                $status = $array[$row][2];
-            }
-        }
-        return $status;
-    }
-
-    public function setCellStatus($array, $x, $y, $value) {
-        $modifiedArray = $array;
-        $newStatus = $value;
-
-        for ($row = 0; $row < 81; $row++) {
-            if ($array[$row][0] == $x && $array[$row][1] == $y) {
-                $modifiedArray[$row][2] = $newStatus;
-            }
-        }
-        return $modifiedArray;
-    }
+    // public function getDefaultMinesArray() {
+    //     $mines = array();
+    //     for ($x = 1; $x < 10; $x++) {
+    //         for ($y = 1; $y < 10; $y++) {
+    //             array_push($mines, array($x, $y, "F"));
+    //         }
+    //     }
+    //     $this->minesBoard = $mines;
+    //     return $mines;
+    // }
+    //
+    // public function getDefaultFlagsArray() {
+    //     $flags = array();
+    //     for ($x = 1; $x < 10; $x++) {
+    //         for ($y = 1; $y < 10; $y++) {
+    //             array_push($flags, array($x, $y, "F"));
+    //         }
+    //     }
+    //     $this->flagsBoard = $flags;
+    //     return $flags;
+    // }
+    //
+    // public function getDefaultUncoveredArray() {
+    //     $uncovered = array();
+    //     for ($x = 1; $x < 10; $x++) {
+    //         for ($y = 1; $y < 10; $y++) {
+    //             array_push($uncovered, array($x, $y, "F"));
+    //         }
+    //     }
+    //     $this->uncoveredBoard = $uncovered;
+    //     return $uncovered;
+    // }
+    //
+    // public function getCellStatus($array, $x, $y) {
+    //     $status = "";
+    //
+    //     for ($row = 0; $row < 81; $row++) {
+    //         if ($array[$row][0] == $x && $array[$row][1] == $y) {
+    //             $status = $array[$row][2];
+    //         }
+    //     }
+    //     return $status;
+    // }
+    //
+    // public function setCellStatus($array, $x, $y, $value) {
+    //     $modifiedArray = $array;
+    //     $newStatus = $value;
+    //
+    //     for ($row = 0; $row < 81; $row++) {
+    //         if ($array[$row][0] == $x && $array[$row][1] == $y) {
+    //             $modifiedArray[$row][2] = $newStatus;
+    //         }
+    //     }
+    //     return $modifiedArray;
+    // }
 
     /**
      * Randomizes the coordinates of all mines on the gameboard.
@@ -132,21 +136,52 @@ class Gameboard
 
         return false;
     }
+
+    /**
+     * Sets the default gameboard with random mine coordinates
+     */
+    public function setDefaultGameboard() {
+        $defaultGameboard = array();
+        for ($x = 1; $x < $this->$gameboardWidth + 1; $x++) {
+            for ($y = 1; $y < $gameboardHeight + 1; $y++) {
+                // Setting default values for each cell
+                // (X Coordinate, Y Coordinate, Mine, Flag, Uncovered)
+                array_push($defaultGameboard, array($x, $y, "F", "F", "F"));
+            }
+        }
+
+        // TESTING START - 2D ARRAY CONTENTS
+
+        for ($row = 0; $row < 81; $row++) {
+         echo "<p><b>Row number $row</b></p>";
+         echo "<ul>";
+         for ($col = 0; $col < 5; $col++) {
+           echo "<li>".$defaultGameboard[$row][$col]."</li>";
+         }
+         echo "</ul>";
+        }
+
+        // TESTING END
+    }
 }
-//
-////// TEST
-//$mines = array();
-//for ($x = 1; $x < 10; $x++) {
-//  for ($y = 1; $y < 10; $y++) {
-//    array_push($mines, array($x, $y, "F"));
-//  }
-//}
-//
-//for ($row = 0; $row < 81; $row++) {
-//  echo "<p><b>Row number $row</b></p>";
-//  echo "<ul>";
-//  for ($col = 0; $col < 3; $col++) {
-//    echo "<li>".$mines[$row][$col]."</li>";
-//  }
-//  echo "</ul>";
-//}
+
+// TEST START
+$defaultGameboard = array();
+for ($x = 1; $x < 10 + 1; $x++) {
+    for ($y = 1; $y < 10; $y++) {
+        // Setting default values for each cell
+        // (X Coordinate, Y Coordinate, Mine, Flag, Uncovered)
+        array_push($defaultGameboard, array($x, $y, "F", "F", "F"));
+    }
+}
+
+for ($row = 0; $row < 81; $row++) {
+ echo "<p><b>Row number $row</b></p>";
+ echo "<ul>";
+ for ($col = 0; $col < 5; $col++) {
+   echo "<li>".$defaultGameboard[$row][$col]."</li>";
+ }
+ echo "</ul>";
+}
+
+// TESTING END
