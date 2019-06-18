@@ -29,39 +29,6 @@ class Gameboard
      */
     private $gameboardHeight = 9;
 
-    // public function getDefaultMinesArray() {
-    //     $mines = array();
-    //     for ($x = 1; $x < 10; $x++) {
-    //         for ($y = 1; $y < 10; $y++) {
-    //             array_push($mines, array($x, $y, "F"));
-    //         }
-    //     }
-    //     $this->minesBoard = $mines;
-    //     return $mines;
-    // }
-    //
-    // public function getDefaultFlagsArray() {
-    //     $flags = array();
-    //     for ($x = 1; $x < 10; $x++) {
-    //         for ($y = 1; $y < 10; $y++) {
-    //             array_push($flags, array($x, $y, "F"));
-    //         }
-    //     }
-    //     $this->flagsBoard = $flags;
-    //     return $flags;
-    // }
-    //
-    // public function getDefaultUncoveredArray() {
-    //     $uncovered = array();
-    //     for ($x = 1; $x < 10; $x++) {
-    //         for ($y = 1; $y < 10; $y++) {
-    //             array_push($uncovered, array($x, $y, "F"));
-    //         }
-    //     }
-    //     $this->uncoveredBoard = $uncovered;
-    //     return $uncovered;
-    // }
-    //
     // public function getCellStatus($array, $x, $y) {
     //     $status = "";
     //
@@ -98,8 +65,8 @@ class Gameboard
         // Loops until all mines have been given random coordinates
         while ($count < $this->numMines) {
             // Randomizes the x and y coordinates of each mine
-            $x = rand(1, $this->numMines);
-            $y = rand(1, $this->numMines);
+            $x = rand(1, $this->numMines - 1);
+            $y = rand(1, $this->numMines - 1);
 
             // If the randomized x and y coordinates don't exist in $arrMineCoordinates,
             // insert them into the array
@@ -142,47 +109,52 @@ class Gameboard
      */
     public function setDefaultGameboard() {
         $defaultGameboard = array();
-        for ($x = 1; $x < $this->$gameboardWidth + 1; $x++) {
-            for ($y = 1; $y < $gameboardHeight + 1; $y++) {
+        for ($i = 1; $i < $this->gameboardWidth + 1; $i++) {
+            for ($j = 1; $j < $this->gameboardHeight + 1; $j++) {
                 // Setting default values for each cell
                 // (X Coordinate, Y Coordinate, Mine, Flag, Uncovered)
-                array_push($defaultGameboard, array($x, $y, "F", "F", "F"));
+                array_push($defaultGameboard, array($i, $j, "F", "F", "F"));
             }
         }
 
-        // TESTING START - 2D ARRAY CONTENTS
+        // Gets array of random mines
+        $arrMineCoordinates = $this->randomizeMinePlacement();
 
+        // Matches gameboard coordinates to mine coordinates and sets the mine value to 'T' for True
         for ($row = 0; $row < 81; $row++) {
-         echo "<p><b>Row number $row</b></p>";
-         echo "<ul>";
-         for ($col = 0; $col < 5; $col++) {
-           echo "<li>".$defaultGameboard[$row][$col]."</li>";
-         }
-         echo "</ul>";
+            for ($i = 0; $i < 10; $i++) {
+                if ($defaultGameboard[$row][0] == $arrMineCoordinates[$i][0] && $defaultGameboard[$row][1] == $arrMineCoordinates[$i][1]) {
+                    // Setting mine to 'T' for True
+                    $defaultGameboard[$row][2] = "T";
+                }
+            }
         }
 
-        // TESTING END
+        /**  Uncomment following code to debug mine placement only!
+        // START OF ECHO TESTS
+        echo "<h1><b>RANDOMIZED MINES</b></h1>";
+
+        for ($i = 0; $i < 10; $i++) {
+            echo "<p><b>Mine number $i</b></p>";
+            echo "<ul>";
+            for ($j = 0; $j < 2; $j++) {
+                echo "<li>".$arrMineCoordinates[$i][$j]."</li>";
+            }
+            echo "</ul>";
+        }
+
+
+        echo "<h1><b>GAMEBOARD</b></h1>";
+        for ($row = 0; $row < 81; $row++) {
+            echo "<p><b>Cell number $row</b></p>";
+            echo "<ul>";
+            for ($col = 0; $col < 5; $col++) {
+                echo "<li>".$defaultGameboard[$row][$col]."</li>";
+            }
+            echo "</ul>";
+        }
+        // END OF ECHO TESTS
+         */
     }
 }
 
-echo "THIS IS A TEST 747";
-// // TEST START
-// $defaultGameboard = array();
-// for ($x = 1; $x < 10 + 1; $x++) {
-//     for ($y = 1; $y < 10; $y++) {
-//         // Setting default values for each cell
-//         // (X Coordinate, Y Coordinate, Mine, Flag, Uncovered)
-//         array_push($defaultGameboard, array($x, $y, "F", "F", "F"));
-//     }
-// }
-//
-// for ($row = 0; $row < 81; $row++) {
-//  echo "<p><b>Row number $row</b></p>";
-//  echo "<ul>";
-//  for ($col = 0; $col < 5; $col++) {
-//    echo "<li>".$defaultGameboard[$row][$col]."</li>";
-//  }
-//  echo "</ul>";
-// }
-
-// TESTING END
