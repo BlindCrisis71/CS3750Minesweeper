@@ -165,23 +165,24 @@ class Gameboard
     }
 }
 
-// TEST START
-$defaultGameboard = array();
-for ($x = 1; $x < 10 + 1; $x++) {
-    for ($y = 1; $y < 10; $y++) {
-        // Setting default values for each cell
-        // (X Coordinate, Y Coordinate, Mine, Flag, Uncovered)
-        array_push($defaultGameboard, array($x, $y, "F", "F", "F"));
-    }
-}
-
-for ($row = 0; $row < 81; $row++) {
- echo "<p><b>Row number $row</b></p>";
- echo "<ul>";
- for ($col = 0; $col < 5; $col++) {
-   echo "<li>".$defaultGameboard[$row][$col]."</li>";
- }
- echo "</ul>";
-}
+echo "THIS IS A TEST 747";
+// // TEST START
+// $defaultGameboard = array();
+// for ($x = 1; $x < 10 + 1; $x++) {
+//     for ($y = 1; $y < 10; $y++) {
+//         // Setting default values for each cell
+//         // (X Coordinate, Y Coordinate, Mine, Flag, Uncovered)
+//         array_push($defaultGameboard, array($x, $y, "F", "F", "F"));
+//     }
+// }
+//
+// for ($row = 0; $row < 81; $row++) {
+//  echo "<p><b>Row number $row</b></p>";
+//  echo "<ul>";
+//  for ($col = 0; $col < 5; $col++) {
+//    echo "<li>".$defaultGameboard[$row][$col]."</li>";
+//  }
+//  echo "</ul>";
+// }
 
 // TESTING END
