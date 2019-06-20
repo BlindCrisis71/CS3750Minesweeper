@@ -130,9 +130,11 @@ class Gameboard
             }
         }
 
+        $this->gameboard = $defaultGameboard;
+
         /**  Uncomment following code to debug mine placement only!
         // START OF ECHO TESTS
-        echo "<h1><b>RANDOMIZED MINES</b></h1>";
+        echo "<h1>RANDOMIZED MINES</h1>";
 
         for ($i = 0; $i < 10; $i++) {
             echo "<p><b>Mine number $i</b></p>";
@@ -144,7 +146,7 @@ class Gameboard
         }
 
 
-        echo "<h1><b>GAMEBOARD</b></h1>";
+        echo "<h1>GAMEBOARD --- KEY (X, Y, Mine, Flag, Uncovered)</h1>";
         for ($row = 0; $row < 81; $row++) {
             echo "<p><b>Cell number $row</b></p>";
             echo "<ul>";
@@ -153,7 +155,7 @@ class Gameboard
             }
             echo "</ul>";
         }
-        // END OF ECHO TESTS
+        // END OF ECHO TEST
          */
     }
 }
