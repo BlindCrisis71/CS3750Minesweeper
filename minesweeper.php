@@ -1,6 +1,6 @@
 <?php
-include ("cell.php");
-include "dbconfig.php";
+include ("classes/cell.php");
+include "database/dbconfig.php";
 
 //Initialize Table
 $table = [
