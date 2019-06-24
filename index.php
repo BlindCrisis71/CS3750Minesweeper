@@ -123,6 +123,24 @@ if ($conn->connect_error) {
         s = Utf8Encode(s);
         return binb2hex(core_sha256(str2binb(s), s.length * chrsz));
     }
+
+
+    // function hashPassword(username, password) {
+    //     // Hashes the password on the client side
+    //     var hash = SHA256(password);
+    //     const xhr = new XMLHttpRequest();
+    //
+    //     xhr.onload = function () {
+    //         const serverResponse = document.getElementById("results");
+    //         serverResponse.innerHTML = this.responseText;
+    //     };
+    //
+    //     // Posts username and password to the server
+    //     xhr.open("POST", "hash_password.php");
+    //     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    //     xhr.send("username=" + username + "&password=" + hash);
+    // }
+
 </script>
 
 <body>
@@ -140,10 +158,8 @@ if ($conn->connect_error) {
 
 
 <?php
-
 // Checks to see if the username and password were set when the form was submitted
 if (!(empty(isset($_POST['username'])) && empty(isset($_POST['password'])))) {
-
     // If the user clicked the Login button
     if(!empty(isset($_POST['btnLogin']))) {
 //        $sql = "SELECT COUNT(*)
@@ -175,21 +191,29 @@ if (!(empty(isset($_POST['username'])) && empty(isset($_POST['password'])))) {
         if ($count > 0) {
             echo "Username already taken!";
         } else {
+
+            // Logs the user in
+            $_SESSION['username'] = $_POST['username'];
+
             echo "<script>",
-                // Hashes password on client-side and places it into a variable
+                // Hashes the password on the client side
                 "var hash = SHA256('" . $_POST['password'] . "');",
 
-                // Passes hash to the server side
-                "$.ajax('index.php', {",
-                    "type: 'POST',",
-                    "data: { hashpassword: hash },",
-                    "success: function(data){",
-                        "$('#results').html(hash)",
-                    "}",
-                "})",
+                "const xhr = new XMLHttpRequest();",
+
+                "xhr.onload = function () {",
+                    "const serverResponse = document.getElementById('results');",
+                    "serverResponse.innerHTML = this.responseText;",
+                "};",
+
+                // Posts username and password to the server
+                "xhr.open('POST', 'hash_password.php');",
+                "xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');",
+                "xhr.send('username=" . $_POST['username'] . "&hashedPassword=' + hash);",
             "</script>";
 
-            echo "Hash isset: " . isset($_POST['results']);
+            // Redirects the user to the game page
+            header('Location: minesweeper.php');
         }
     }
 }
