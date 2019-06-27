@@ -161,6 +161,10 @@ if ($conn->connect_error) {
 
 <?php
 
+if ($_POST['logout']) {
+    unset($_SESSION['username']);
+}
+
 // Checks to see if the username and password were set when the form was submitted
 if (!(empty(isset($_POST['username'])) && empty(isset($_POST['password'])))) {
 
