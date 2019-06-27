@@ -19,19 +19,6 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-
-    echo "Username is -> " . $_SESSION['username'] . "<br>";
-    echo "Client hash is -> " . $_SESSION['clientHash'] . "<br>";
-    echo "Server hash is -> " . $_SESSION['serverHash'] . "<br><br>";
-
-    echo "Login button has been pressed: " . $_POST['btnLogin'] . "<br>";
-    echo "Register button has been pressed: " . $_POST['btnRegister'] . "<br><br>";
-
-    echo "Username Post: " . $_POST['username'] . "<br>";
-    echo "Password Post: " . $_POST['password'] . "<br><br>";
-
-    echo "Username is set" . isset($_SESSION['username']);
-
 ?>
 
 <!doctype html>
