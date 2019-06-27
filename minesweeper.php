@@ -1,8 +1,8 @@
 <?php
 session_start();
-include ("cell.php");
-include "dbconfig.php";
-include "Gameboard.php";
+include ("classes/cell.php");
+include "database/dbconfig.php";
+include "classes/Gameboard.php";
 
   if($_SESSION['status'] == 1){
     $_SESSION['status'] = 2;
@@ -10,7 +10,7 @@ include "Gameboard.php";
     include "printboard.php";
   }
   else if(isset($_GET['x'])){
-      include "dbconfig.php";
+      include "database/dbconfig.php";
 
       //The X and Y Cell the User Clicked
       //$_SESSION['clicked'] = null;
@@ -74,7 +74,7 @@ include "Gameboard.php";
   }
   else{
     if($_SESSION["username"] !== $_GET['username']){
-            $url = "http://localhost/minesweeper/index.php";
+            $url = "http://cs3750homework2.epizy.com/index.php";
             header("Location: $url");
     }
   //     if($_SESSION['firstLoad'] !== false){
@@ -294,8 +294,8 @@ include "Gameboard.php";
       <html id = 'myhtml'>
       <head>
           <title>Minesweeper</title>
-          <link rel='stylesheet' type='text/css' href='game.css'>
-          <script src='minesweeper.js'></script>
+          <link rel='stylesheet' type='text/css' href='stylesheets/game.css'>
+          <script src='scripts/minesweeper.js'></script>
       </head>
       <body>
           <canvas id = 'board' width='310' height='360'>
@@ -577,7 +577,7 @@ include "Gameboard.php";
           
           //draw image
           drawing = new Image();
-          drawing.src = 'small-smile.png';
+          drawing.src = 'img/small-smile.png';
           drawing.height = 15;
           drawing.width = 15;
           drawing.onload = function() {
@@ -588,7 +588,7 @@ include "Gameboard.php";
           function drawFlag(x,y){
               if(flagTable[x-1][y-1] == 0){
                   drawing = new Image();
-                  drawing.src = 'flag.jpg';
+                  drawing.src = 'img/flag.jpg';
                   drawing.height = 15;
                   drawing.width = 15;
                   drawing.onload = function() {
