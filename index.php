@@ -18,6 +18,20 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
+
+
+    echo "Username is -> " . $_SESSION['username'] . "<br>";
+    echo "Client hash is -> " . $_SESSION['clientHash'] . "<br>";
+    echo "Server hash is -> " . $_SESSION['serverHash'] . "<br><br>";
+
+    echo "Login button has been pressed: " . $_POST['btnLogin'] . "<br>";
+    echo "Register button has been pressed: " . $_POST['btnRegister'] . "<br><br>";
+
+    echo "Username Post: " . $_POST['username'] . "<br>";
+    echo "Password Post: " . $_POST['password'] . "<br><br>";
+
+    echo "Username is set" . isset($_SESSION['username']);
+
 ?>
 
 <!doctype html>
@@ -125,21 +139,22 @@ if ($conn->connect_error) {
     }
 
 
-    // function hashPassword(username, password) {
-    //     // Hashes the password on the client side
-    //     var hash = SHA256(password);
-    //     const xhr = new XMLHttpRequest();
-    //
-    //     xhr.onload = function () {
-    //         const serverResponse = document.getElementById("results");
-    //         serverResponse.innerHTML = this.responseText;
-    //     };
-    //
-    //     // Posts username and password to the server
-    //     xhr.open("POST", "hash_password.php");
-    //     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    //     xhr.send("username=" + username + "&password=" + hash);
-    // }
+    function hashPassword(password) {
+
+        const hash = SHA256(password);
+
+        const xhr = new XMLHttpRequest();
+
+        xhr.onload = function () {
+            const serverResponse = document.getElementById('results');
+            serverResponse.innerHTML = this.responseText;
+        };
+
+        // Posts username and password to the server
+        xhr.open('POST', 'classes/hash_password.php');
+        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        xhr.send('hashedPassword=' + hash);
+    }
 
 </script>
 
@@ -158,32 +173,72 @@ if ($conn->connect_error) {
 
 
 <?php
+
 // Checks to see if the username and password were set when the form was submitted
 if (!(empty(isset($_POST['username'])) && empty(isset($_POST['password'])))) {
-    // If the user clicked the Login button
+
+    /**************************************************
+     All the logic for logging a user in
+     **************************************************/
     if(!empty(isset($_POST['btnLogin']))) {
-//        $sql = "SELECT COUNT(*)
-//                FROM User
-//                WHERE Username = '" . $_POST['username'] .
-//            "' AND Password = '" . $_POST['password'] . "'";
-//        $result = $conn->query($sql);
-//
-//        if ($result->num_rows > 0) {
-//
-//        }
-    } // If the user clicked the Register button
-    else if (!empty(isset($_POST['btnRegister']))){
+
+        // SQL string to return specified username and password in database
+        $sql = "SELECT Username, Password FROM User WHERE Username = '" . $_POST['username'] . "'";
+
+        // Returns user info based off a specific username
+        $result = $conn->query($sql);
+
+        // True if the provided user credentials are valid
+        $validUserCredentials = false;
+
+        // Only runs if there is any data returned
+        if ($result->num_rows > 0) {
+
+            while ($row = $result->fetch_assoc()) {
+
+                // Hashes the password on both the client and server side
+                echo "<script> hashPassword('" . $_POST['password'] . "'); </script>";
+
+                // Hash session variables haven't been set yet
+                if (!isset($_SESSION['clientHash'])) {
+                    echo "<script> location.reload(); </script>";
+                } // Hash session variables have been set
+                else {
+
+                    // Password passed in matches the password in the database for that user
+                    if (password_verify($_SESSION['clientHash'], $row['Password'])) {
+
+                        // Sets the username for the game and redirects to the gamepage
+                        $_SESSION['username'] = $row['Username'];
+                        unset($_SESSION['clientHash']);
+                        unset($_SESSION['serverHash']);
+                        echo "<script> document.location='minesweeper.php'; </script>";
+                    } // Password passed in doesn't match the password in the database for that user
+                    else {
+                        unset($_SESSION['clientHash']);
+                        unset($_SESSION['serverHash']);
+                        echo "Username/password is incorrect!";
+                    }
+                }
+            }
+        }
+    }
+    /**************************************************
+    All the logic for registering a user
+     **************************************************/
+    else if (!empty(isset($_POST['btnRegister']))) {
+
         // SQL string to return count of users in database with the defined username
-        $sql = "SELECT COUNT(*)
-                FROM User
-                WHERE Username = '" . $_POST['username'] . "'";
+        $sql = "SELECT COUNT(*) FROM User WHERE Username = '" . $_POST['username'] . "'";
         // Returns the count of database entries with the specified username
         $result = $conn->query($sql);
         // Holds the count of database entries with the specified username
         $count = 0;
 
         if ($result->num_rows > 0) {
+
             while ($row = $result->fetch_assoc()) {
+
                 $count += $row["COUNT(*)"];
             }
         }
@@ -195,25 +250,15 @@ if (!(empty(isset($_POST['username'])) && empty(isset($_POST['password'])))) {
             // Logs the user in
             $_SESSION['username'] = $_POST['username'];
 
-            echo "<script>",
-                // Hashes the password on the client side
-                "var hash = SHA256('" . $_POST['password'] . "');",
+            // Hashes the password on both the client and server side
+            echo "<script> hashPassword('" . $_POST['password'] . "'); </script>";
 
-                "const xhr = new XMLHttpRequest();",
-
-                "xhr.onload = function () {",
-                    "const serverResponse = document.getElementById('results');",
-                    "serverResponse.innerHTML = this.responseText;",
-                "};",
-
-                // Posts username and password to the server
-                "xhr.open('POST', 'hash_password.php');",
-                "xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');",
-                "xhr.send('username=" . $_POST['username'] . "&hashedPassword=' + hash);",
-            "</script>";
+            // Inserts the user and hashed password into the database
+            $sql = "INSERT INTO User (Username, Password) VALUES ('" . $_SESSION['username'] . "', '" . $_SESSION['serverHash'] . "')";
+            $result = $conn->query($sql);
 
             // Redirects the user to the game page
-            header('Location: minesweeper.php');
+            echo "<script> document.location='minesweeper.php'; </script>";
         }
     }
 }
