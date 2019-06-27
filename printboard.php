@@ -1,6 +1,6 @@
 <?php 
 	if($_SESSION["username"] !== $_GET['username']){
-            $url = "http://localhost/minesweeper/index.php";
+            $url = "http://cs3750homework2.epizy.com/index.php";
             header("Location: $url");
     }
       $xClicked = 0;
@@ -198,8 +198,8 @@
       <html id = 'myhtml'>
       <head>
           <title>Minesweeper</title>
-          <link rel='stylesheet' type='text/css' href='game.css'>
-          <script src='minesweeper.js'></script>
+          <link rel='stylesheet' type='text/css' href='stylesheets/game.css'>
+          <script src='scripts/minesweeper.js'></script>
       </head>
       <body onload = "test()">
           <canvas id = 'board' width='310' height='360'>
@@ -319,7 +319,7 @@
                           }
                           else{
                               drawing = new Image();
-                              drawing.src = 'flag.jpg';
+                              drawing.src = 'img/flag.jpg';
                               drawing.height = 15;
                               drawing.width = 15;
                               drawing.onload = function() {
@@ -503,7 +503,7 @@
           
           //draw image
           drawing = new Image();
-          drawing.src = 'small-smile.png';
+          drawing.src = 'img/small-smile.png';
           drawing.height = 15;
           drawing.width = 15;
           drawing.onload = function() {
@@ -514,7 +514,7 @@
           function drawFlag(x,y){
               if(flagTable[x-1][y-1] == 0){
                   drawing = new Image();
-                  drawing.src = 'flag.jpg';
+                  drawing.src = 'img/flag.jpg';
                   drawing.height = 15;
                   drawing.width = 15;
                   drawing.onload = function() {
